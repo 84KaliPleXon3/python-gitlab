@@ -136,6 +136,26 @@ class ListMixin(object):
         else:
             return base.RESTObjectList(self, self._obj_cls, obj)
 
+    @exc.on_http_error(exc.GitlabListError)
+    def count(self, **kwargs):
+        """Retrieve the number of available objects.
+
+        Args:
+            **kwargs: Extra options to send to the server (e.g. sudo)
+
+        Returns:
+            int: The number of objects
+
+        Raises:
+            GitlabAuthenticationError: If authentication is not correct
+            GitlabCountError: If the server cannot perform the request
+        """
+        # Allow to overwrite the path, handy for custom calls
+        path = kwargs.pop('path', self.path)
+
+        headers = self.gitlab.http_head(path, **kwargs)
+        return int(headers['x-total'])
+
 
 class RetrieveMixin(ListMixin, GetMixin):
     pass

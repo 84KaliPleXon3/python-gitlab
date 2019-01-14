@@ -548,6 +548,28 @@ class Gitlab(object):
         else:
             return result
 
+    def http_head(self, path, query_data={}, **kwargs):
+        """Make a HEAD request to the Gitlab server.
+
+        Args:
+            path (str): Path or full URL to query ('/projects' or
+                        'http://whatever/v4/api/projecs')
+            query_data (dict): Data to send as query parameters
+            **kwargs: Extra options to send to the server (e.g. sudo, page,
+                      per_page)
+
+        Returns:
+            requests.structures.CaseInsensitiveDict: A requests.header object
+
+        Raises:
+            GitlabHttpError: When the return code is not 2xx
+        """
+
+        url = self._build_url(path)
+        result = self.http_request('head', url, query_data=query_data,
+                                   **kwargs)
+        return result.headers
+
     def http_list(self, path, query_data={}, as_list=None, **kwargs):
         """Make a GET request to the Gitlab server for list-oriented queries.
 
