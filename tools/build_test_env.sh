@@ -76,9 +76,6 @@ cleanup() {
     trap 'exit 1' HUP INT TERM
 }
 
-try docker run --name gitlab-test --detach --publish 8080:80 \
-    --publish 2222:22 pythongitlab/test-python-gitlab:latest >/dev/null
-
 LOGIN='root'
 PASSWORD='5iveL!fe'
 GITLAB() { gitlab --config-file "$CONFIG" "$@"; }
