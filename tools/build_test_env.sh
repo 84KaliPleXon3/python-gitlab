@@ -122,6 +122,7 @@ done
 
 # Get the token
 TOKEN=$($(dirname $0)/generate_token.py)
+echo $TOKEN
 
 cat > $CONFIG << EOF
 [global]
@@ -138,6 +139,6 @@ log "Config file content ($CONFIG):"
 log <$CONFIG
 
 log "Pausing to give GitLab some time to finish starting up..."
-sleep 60
+sleep 500
 
 log "Test environment initialized."
