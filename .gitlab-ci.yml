@@ -3,6 +3,20 @@ image: python:3.7
 stages:
   - deploy
 
+pages:
+  stage: deploy
+  script:
+    - pip3 install sphinx
+    - python3 setup.py build_sphinx
+    - mkdir public
+    - mv build/sphinx/html/* public/
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - public
+  #only:
+  #  - master
+
 build_test_image:
   stage: deploy
   image:
