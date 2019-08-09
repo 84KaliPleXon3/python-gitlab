@@ -911,3 +911,17 @@ assert retrieved_project.description == release_description
 release_test_project.releases.delete(release_tag_name)
 assert len(release_test_project.releases.list()) == 0
 release_test_project.delete()
+
+# todos
+todo_list = gl.todos.list()
+assert len(todo_list) == 0
+todo_issue_title = "Todo Issue Test"
+todo_issue_description = "Todo Issue Description"
+todo_project = gl.projects.create({"name": "todo-test", "path": "todo-test"})
+todo_issue = todo_project.issues.create(
+    {"title": todo_issue_title, "description": todo_issue_description}
+)
+todo_issue.todo()
+todo_list = gl.todos.list()
+assert len(todo_list) == 1
+# remove todo again
