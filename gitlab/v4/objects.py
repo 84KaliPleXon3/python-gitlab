@@ -143,6 +143,16 @@ class UserCustomAttributeManager(RetrieveMixin, SetMixin, DeleteMixin, RESTManag
     _from_parent_attrs = {"user_id": "id"}
 
 
+class UserStatus(ObjectDeleteMixin, RESTObject):
+    _id_attr = "key"
+
+
+class UserStatusManager(RetrieveMixin, SetMixin, DeleteMixin, RESTManager):
+    _path = "/users/%(user_id)s/status"
+    _obj_cls = UserStatus
+    _from_parent_attrs = {"user_id": "id"}
+
+
 class UserEmail(ObjectDeleteMixin, RESTObject):
     _short_print_attr = "email"
 
@@ -266,6 +276,7 @@ class User(SaveMixin, ObjectDeleteMixin, RESTObject):
     _short_print_attr = "username"
     _managers = (
         ("customattributes", "UserCustomAttributeManager"),
+        ("status", "UserStatusManager"),
         ("emails", "UserEmailManager"),
         ("events", "UserEventManager"),
         ("gpgkeys", "UserGPGKeyManager"),
