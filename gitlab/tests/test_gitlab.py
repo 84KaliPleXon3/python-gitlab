@@ -770,6 +770,40 @@ class TestGitlab(unittest.TestCase):
             self.assertEqual(ret["message"], "Message")
             self.assertEqual(ret["id"], "ed899a2f4b50b4370feeea94676502b42383c746")
 
+    def test_todo_mark_all_as_done(self):
+        @urlmatch(
+            scheme="http",
+            netloc="localhost",
+            path="/api/v4/projects/1/clusters",
+            method="get",
+        )
+        def resp_cluster_list(url, request):
+            headers = {"content-type": "application/json"}
+            return response(
+                200,
+                """
+            [{
+                "id":18,
+                "name":"cluster-1",
+                "domain":"example.com",
+                "created_at":"2019-01-02T20:18:12.563Z",
+                "provider_type":"user",
+                "platform_type":"kubernetes",
+                "environment_scope":"*",
+                "cluster_type":"project_type",
+                "user": {},
+            }]
+            {}""",
+                headers,
+                None,
+                5,
+                request,
+            )
+
+        with HTTMock(resp_cluster_list):
+            project = self.gl.projects.get(1, lazy=True)
+            project.clusters.list()
+
     def _default_config(self):
         fd, temp_path = tempfile.mkstemp()
         os.write(fd, valid_config)

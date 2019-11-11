@@ -3897,6 +3897,16 @@ class ProjectImportManager(GetWithoutIdMixin, RESTManager):
     _from_parent_attrs = {"project_id": "id"}
 
 
+class ProjectCluster:
+    pass
+
+
+class ProjectClusterManager(ListMixin, RestObject):
+    _path = "/projects/%(project_id)s/clusters"
+    _obj_cls = ProjectCluster
+    _from_parent_attrs = {"project_id": "id"}
+
+
 class Project(SaveMixin, ObjectDeleteMixin, RESTObject):
     _short_print_attr = "path"
     _managers = (
@@ -3906,6 +3916,7 @@ class Project(SaveMixin, ObjectDeleteMixin, RESTObject):
         ("badges", "ProjectBadgeManager"),
         ("boards", "ProjectBoardManager"),
         ("branches", "ProjectBranchManager"),
+        ("clusters", "ProjectClusterManager"),
         ("jobs", "ProjectJobManager"),
         ("commits", "ProjectCommitManager"),
         ("customattributes", "ProjectCustomAttributeManager"),
